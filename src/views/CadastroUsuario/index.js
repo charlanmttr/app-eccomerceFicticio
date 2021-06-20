@@ -2,14 +2,37 @@ import React, { useState } from 'react'
 import { Feather } from '@expo/vector-icons'
 import { Container, MainContainer, TitleArea, ButtonArea, BackButton, Title, InputArea, LoginArea } from './styles'
 
+import * as LoginAction from '../../services/actions/loginAction'
+import { useSelector, useDispatch } from 'react-redux'
+
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 
-export default function Login({ navigation }) {
+export default function CadastroUsuario({ navigation }) {
+    const dispatch = useDispatch()
+
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+
+    const validateData = () => {
+        if(name === "") throw "O campo nome deve ser preenchido"
+        if(email === "") throw "O campo email deve ser preenchido"
+        if(password === "") throw "O campo senha deve ser preenchido"
+        if(password !== confirmPassword) throw "As senhas devem ser idênticas"
+    }
+
+    const userRegisterAndLogin = async () => {
+        try {
+            validateData()
+            
+            await dispatch(LoginAction.registerNewUser(email, password, name))
+            navigation.replace("AppDrawer")
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     return (
         <Container>
@@ -65,7 +88,7 @@ export default function Login({ navigation }) {
                     <CustomButton
                         text="Registrar"
                         // icon="user-plus"
-                        action={() => alert('Cadastrar usuario')}
+                        action={() => userRegisterAndLogin()}
                     />
                 </LoginArea>
             </MainContainer>

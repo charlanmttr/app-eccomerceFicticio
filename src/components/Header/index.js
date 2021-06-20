@@ -1,10 +1,35 @@
 import React from 'react'
-import { StatusBar } from 'react-native';
+import { StatusBar, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons'
+import { useDispatch, useSelector } from 'react-redux'
+import * as LoginAction from '../../services/actions/loginAction'
 
-import { MenuIcon, HeaderArea, HeaderText } from './styles.js'
+import { MenuIcon, LogoutIcon, LogoutText, HeaderArea } from './styles.js'
 
 export default function Header({ navigation }) {
+    const dispatch = useDispatch()
+    const user = useSelector(store => store.login)
+
+    const logout = () => {
+        Alert.alert(
+            "Confirmar logout",
+            "Clique em 'continuar' para deslogar do aplicativo.",
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel"
+                },
+                {
+                    text: "Continuar", onPress: () => {
+                        console.log(`usuario ${user.firstName} deslogado`)
+                        dispatch(LoginAction.logoff())
+                        
+                        navigation.reset({ routes: [{ name: 'Login' }] })
+                    }
+                }
+            ])
+    }
+
     return (
         <>
             <StatusBar
@@ -21,8 +46,16 @@ export default function Header({ navigation }) {
                         color="#FFF"
                     />
                 </MenuIcon>
-                <HeaderText>Bem vindo, </HeaderText>
-                <HeaderText.Name>Fulano</HeaderText.Name>
+                <LogoutIcon
+                    onPress={() => logout()}
+                >
+                    <Feather
+                        name="log-out"
+                        size={25}
+                        color="#0068ff"
+                    />
+                    <LogoutText> Sair</LogoutText>
+                </LogoutIcon>
             </HeaderArea>
         </>
     )

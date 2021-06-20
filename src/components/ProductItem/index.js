@@ -2,7 +2,6 @@ import React from 'react'
 import { ProductArea, ImageArea, ProductInfoArea } from './styles'
 
 export default function ProductItem({ data, openAction }) {
-
     return (
         <ProductArea
             onPress={() => openAction(data)}

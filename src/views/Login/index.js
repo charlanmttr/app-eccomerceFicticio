@@ -1,15 +1,47 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { CheckBox } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient'
 import { MainContainer, Title, InputArea, RegisterArea, RegisterText, RegisterButtonArea, CheckBoxArea, CheckboxText } from './styles'
+
+import * as LoginAction from '../../services/actions/loginAction'
+import { useSelector, useDispatch } from 'react-redux'
 
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 
 export default function Login({ navigation }) {
+    const dispatch = useDispatch()
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isSelected, setSelection] = useState(false)
+
+    const userLogin = async () => {
+        try {
+            await dispatch(LoginAction.login(email, password, isSelected))
+
+            navigation.replace("AppDrawer")
+        } catch (error) {
+            alert(error)
+            //local para mostrar erro
+        }
+    }
+
+    useEffect(() => {
+        const getLoginData = async () => {
+            let savedEmail = await AsyncStorage.getItem("@eccommerce.email")
+            let savedPassword = await AsyncStorage.getItem("@eccommerce.password")
+
+            if (savedEmail) {
+                setEmail(savedEmail)
+                setSelection(true)
+            }
+            if (savedPassword) setPassword(savedPassword)
+        }
+        getLoginData()
+
+    }, [])
 
     return (
         <LinearGradient
@@ -61,7 +93,8 @@ export default function Login({ navigation }) {
                 <CustomButton
                     text="Login"
                     // icon="log-in"
-                    action={() => navigation.navigate('AppDrawer')}
+                    action={() => userLogin()}
+                // action={() => navigation.navigate('AppDrawer')}
                 />
             </MainContainer>
         </LinearGradient>

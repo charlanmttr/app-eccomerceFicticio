@@ -1,41 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import * as ProductsAction from '../../services/actions/productsAction'
 
-import api from '../../utils/api'
+import { Container, ProductList, Modal, TextIntroArea } from './styles.js'
+
 import ProductItem from '../../components/ProductItem'
 import ProductModal from '../../components/ProductModal'
 import Header from '../../components/Header'
 
-import { Container, ProductList, Modal, TextIntroArea } from './styles.js'
-
 export default function Homepage({ navigation }) {
-    const [productList, setProductList] = useState([])
+    const dispatch = useDispatch()
+    const user = useSelector(store => store.login)
+    const products = useSelector(store => store.products)
+
     const [productInfo, setProductInfo] = useState({})
     const [modalVisible, setModalVisible] = useState(false)
-    const [loading, setLoading] = useState()
+    const [loading, setLoading] = useState(true)
 
     const handleModal = (product) => {
         setProductInfo(product)
         setModalVisible(true)
     }
 
-    const getProducts = async () => {
-        setLoading(true)
-        const response = await api.get('/products')
-            .then(res => {
-                return res.data
-            }).catch(err => console.log(err))
-        setProductList(response)
-        setLoading(false)
-    }
-
     useEffect(() => {
-        getProducts()
-    }, [])
+        dispatch(ProductsAction.getProducts())
+            .then(() => setLoading(false))
+    }, [dispatch])
 
     return (
         <>
-            <Header navigation={navigation} />
+            <Header navigation={navigation} firstName={user.firstName} />
             {
                 loading
                     ?
@@ -52,7 +47,7 @@ export default function Homepage({ navigation }) {
                                 <TextIntroArea.Text>Alguns produtos que achamos que podem te interessar:</TextIntroArea.Text>
                             </TextIntroArea>
                             <ProductList
-                                data={productList}
+                                data={products}
                                 renderItem={({ item }) => <ProductItem data={item} openAction={handleModal} />}
                                 keyExtractor={item => String(item.id)}
                             />

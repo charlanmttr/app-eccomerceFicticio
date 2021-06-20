@@ -1,10 +1,24 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
-import { ModalArea, Container, CloseButton, ModalHeader, ProductArea, ProductImage, ButtonArea, QuantityButton, BuyButton, CancelButton } from './styles'
 import { Feather } from '@expo/vector-icons'
+import { useDispatch } from 'react-redux'
+import { ModalArea, Container, CloseButton, ModalHeader, ProductArea, ProductImage, ButtonArea, QuantityButton, BuyButton, CancelButton } from './styles'
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import * as CartAction from '../../services/actions/cartAction'
 
 export default function ProductModal({ data, closeAction }) {
     const [quantity, setQuantity] = useState(1);
+    const dispatch = useDispatch()
+
+    const deleteCart = async () => {
+        await AsyncStorage.removeItem("@eccommerce.cart")
+        console.log('clear cart')
+    }
+
+    const addProductToCart = () => {
+        dispatch(CartAction.addProductToCart(data, quantity))
+    }
 
     return (
         <Container>
@@ -40,14 +54,15 @@ export default function ProductModal({ data, closeAction }) {
                     <ProductArea.Price>Price: ${data.price}</ProductArea.Price>
                 </ProductArea>
                 <ButtonArea>
-                    <CancelButton onPress={closeAction}>
+                    <CancelButton onPress={() => deleteCart()}>
+                        {/* <CancelButton onPress={closeAction}> */}
                         <CancelButton.Text>
                             Cancelar
                         </CancelButton.Text>
                     </CancelButton>
                     <QuantityButton>
                         <QuantityButton.Remove
-                            onPress={() => (quantity !== 1) ? setQuantity(quantity - 1) : null}
+                            onPress={() => (quantity > 1) ? setQuantity(quantity - 1) : null}
                         >
                             <Feather
                                 name="minus"
@@ -61,7 +76,7 @@ export default function ProductModal({ data, closeAction }) {
                             </QuantityButton.Text>
                         </QuantityButton.QuantityView>
                         <QuantityButton.Add
-                            onPress={() => setQuantity(quantity + 1)}
+                            onPress={() => (quantity < 10) ? setQuantity(quantity + 1) : null}
                         >
                             <Feather
                                 name="plus"
@@ -70,7 +85,7 @@ export default function ProductModal({ data, closeAction }) {
                             />
                         </QuantityButton.Add>
                     </QuantityButton>
-                    <BuyButton>
+                    <BuyButton onPress={() => addProductToCart()}>
                         <BuyButton.Text>
                             Comprar
                         </BuyButton.Text>
