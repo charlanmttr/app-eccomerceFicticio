@@ -1,11 +1,11 @@
 import React from 'react'
-import { LoginButtonArea, LoginButton, LoginText } from './styles'
+import { Button } from './styles'
 import { Feather } from '@expo/vector-icons'
 
 export default function CustomButton({ text, icon, action }) {
     return (
-        <LoginButtonArea>
-            <LoginButton onPress={action}>
+        <Button.Area>
+            <Button onPress={action}>
                 {icon &&
                     <Feather
                         name={icon}
@@ -13,8 +13,8 @@ export default function CustomButton({ text, icon, action }) {
                         color="#000"
                     />
                 }
-                <LoginText>{text}</LoginText>
-            </LoginButton>
-        </LoginButtonArea>
+                <Button.Text>{text}</Button.Text>
+            </Button>
+        </Button.Area>
     )
 }

@@ -3,21 +3,15 @@ import { Feather } from '@expo/vector-icons'
 import { useDispatch } from 'react-redux'
 import { ModalArea, Container, CloseButton, ModalHeader, ProductArea, ProductImage, ButtonArea, QuantityButton, BuyButton, CancelButton } from './styles'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import * as CartAction from '../../services/actions/cartAction'
 
-export default function ProductModal({ data, closeAction }) {
+export default function ProductModal({ data, closeAction, closeAfterBuy }) {
     const [quantity, setQuantity] = useState(1);
     const dispatch = useDispatch()
 
-    const deleteCart = async () => {
-        await AsyncStorage.removeItem("@eccommerce.cart")
-        console.log('clear cart')
-    }
-
     const addProductToCart = () => {
         dispatch(CartAction.addProductToCart(data, quantity))
+        closeAfterBuy(data.title)
     }
 
     return (
@@ -32,6 +26,7 @@ export default function ProductModal({ data, closeAction }) {
                         />
                     </CloseButton>
                 </ModalHeader>
+                
                 <ProductImage>
                     <ProductImage.Area>
                         <ProductImage.Image
@@ -40,26 +35,24 @@ export default function ProductModal({ data, closeAction }) {
                         />
                     </ProductImage.Area>
                 </ProductImage>
+
                 <ProductArea>
-                    <ProductArea.Name
-                        numberOfLines={2}
-                    >
+                    <ProductArea.Name numberOfLines={2}>
                         {data.title}
                     </ProductArea.Name>
-                    <ProductArea.Description
-                        numberOfLines={3}
-                    >
+                    <ProductArea.Description numberOfLines={3}>
                         {data.description}
                     </ProductArea.Description>
                     <ProductArea.Price>Price: ${data.price}</ProductArea.Price>
                 </ProductArea>
+                
                 <ButtonArea>
-                    <CancelButton onPress={() => deleteCart()}>
-                        {/* <CancelButton onPress={closeAction}> */}
+                    <CancelButton onPress={() => closeAction()}>
                         <CancelButton.Text>
                             Cancelar
                         </CancelButton.Text>
                     </CancelButton>
+                
                     <QuantityButton>
                         <QuantityButton.Remove
                             onPress={() => (quantity > 1) ? setQuantity(quantity - 1) : null}
@@ -70,11 +63,11 @@ export default function ProductModal({ data, closeAction }) {
                                 size={25}
                             />
                         </QuantityButton.Remove>
+
                         <QuantityButton.QuantityView>
-                            <QuantityButton.Text>
-                                {quantity}
-                            </QuantityButton.Text>
+                            <QuantityButton.Text>{quantity}</QuantityButton.Text>
                         </QuantityButton.QuantityView>
+                        
                         <QuantityButton.Add
                             onPress={() => (quantity < 10) ? setQuantity(quantity + 1) : null}
                         >
@@ -85,10 +78,9 @@ export default function ProductModal({ data, closeAction }) {
                             />
                         </QuantityButton.Add>
                     </QuantityButton>
+
                     <BuyButton onPress={() => addProductToCart()}>
-                        <BuyButton.Text>
-                            Comprar
-                        </BuyButton.Text>
+                        <BuyButton.Text>Comprar</BuyButton.Text>
                     </BuyButton>
                 </ButtonArea>
             </ModalArea>

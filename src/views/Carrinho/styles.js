@@ -5,28 +5,7 @@ export const Container = styled.View`
     background-color: #bfd9ff;
 `;
 
-export const EmptyCartArea = styled.View`
-    background-color: #FFF;
-    margin: 15px 25px;
-    border-radius: 5px;
-    padding: 10px;
-    align-items: center;
-`;
-
-EmptyCartArea.Text = styled.Text`
-    font-size: 17px;
-`;
-
-export const TextIntroArea = styled.View`
-    margin: 15px 25px;
-`;
-
-TextIntroArea.Text = styled.Text`
-    font-size: 17px;
-    font-weight: bold;
-`;
-
-export const Cart = styled.FlatList`
+export const CartList = styled.FlatList`
     margin: 0 25px;
 `;
 

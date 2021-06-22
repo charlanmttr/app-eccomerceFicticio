@@ -2,11 +2,11 @@ import styled from 'styled-components'
 
 export const ProductArea = styled.TouchableOpacity`
     background-color: #FFF; /* rgba(0,104,255, 0.1); #bfd9ff */
-    margin: 8px 30px;
     height: 110px;
     flex-direction: row;
     border-radius: 5px;
     padding: 10px;
+    margin-bottom: 8px;
 `;
 
 export const ImageArea = styled.View`

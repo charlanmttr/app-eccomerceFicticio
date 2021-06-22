@@ -3,10 +3,11 @@ import { Feather } from '@expo/vector-icons'
 import { Container, MainContainer, TitleArea, ButtonArea, BackButton, Title, InputArea, LoginArea } from './styles'
 
 import * as LoginAction from '../../services/actions/loginAction'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
+import CustomPasswordInput from '../../components/CustomPasswordInput';
 
 export default function CadastroUsuario({ navigation }) {
     const dispatch = useDispatch()
@@ -67,21 +68,19 @@ export default function CadastroUsuario({ navigation }) {
                     />
                 </InputArea>
                 <InputArea>
-                    <CustomInput
+                    <CustomPasswordInput
                         icon="lock"
                         placeholder="Digite sua senha"
                         value={password}
                         valueChange={setPassword}
-                        password
                     />
                 </InputArea>
                 <InputArea>
-                    <CustomInput
+                    <CustomPasswordInput
                         icon="lock"
                         placeholder="Confirme sua senha"
                         value={confirmPassword}
                         valueChange={setConfirmPassword}
-                        password
                     />
                 </InputArea>
                 <LoginArea>

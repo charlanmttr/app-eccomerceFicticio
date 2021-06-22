@@ -3,20 +3,33 @@ import { ActivityIndicator } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import * as ProductsAction from '../../services/actions/productsAction'
 
-import { Container, ProductList, Modal, TextIntroArea } from './styles.js'
+import { Container, ProductList, Modal } from './styles.js'
 
 import ProductItem from '../../components/ProductItem'
 import ProductModal from '../../components/ProductModal'
 import Header from '../../components/Header'
+import IntroductionText from '../../components/IntroductionText'
+import NotificationArea from '../../components/NotificationArea'
 
 export default function Homepage({ navigation }) {
     const dispatch = useDispatch()
-    const user = useSelector(store => store.login)
     const products = useSelector(store => store.products)
 
     const [productInfo, setProductInfo] = useState({})
     const [modalVisible, setModalVisible] = useState(false)
+    const [notificationVisible, setNotificationVisible] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [addedProduct, setAddedProduct] = useState('')
+
+    const closeAfterBuy = (productName) => {
+        setModalVisible(false)
+        setAddedProduct(productName)
+        setNotificationVisible(true)
+        setTimeout(() => {
+            setNotificationVisible(false)
+            setAddedProduct('')
+        }, 3000)
+    }
 
     const handleModal = (product) => {
         setProductInfo(product)
@@ -30,7 +43,7 @@ export default function Homepage({ navigation }) {
 
     return (
         <>
-            <Header navigation={navigation} firstName={user.firstName} />
+            <Header navigation={navigation} screenName="Homepage" />
             {
                 loading
                     ?
@@ -43,15 +56,15 @@ export default function Homepage({ navigation }) {
                     :
                     <>
                         <Container>
-                            <TextIntroArea>
-                                <TextIntroArea.Text>Alguns produtos que achamos que podem te interessar:</TextIntroArea.Text>
-                            </TextIntroArea>
+                            <IntroductionText text="Alguns produtos que achamos que podem te interessar:" />
                             <ProductList
                                 data={products}
                                 renderItem={({ item }) => <ProductItem data={item} openAction={handleModal} />}
                                 keyExtractor={item => String(item.id)}
+                                showsVerticalScrollIndicator={false}
                             />
                         </Container>
+
                         <Modal
                             animationType="slide"
                             transparent={true}
@@ -61,9 +74,16 @@ export default function Homepage({ navigation }) {
                         >
                             <ProductModal
                                 closeAction={() => setModalVisible(false)}
+                                closeAfterBuy={closeAfterBuy}
                                 data={productInfo}
                             />
                         </Modal>
+
+                        {notificationVisible &&
+                            <NotificationArea
+                                text={`O produto ${addedProduct} foi adicionado ao carrinho.`}
+                                closeAction={() => setNotificationVisible(false)} />
+                        }
                     </>
             }
         </>

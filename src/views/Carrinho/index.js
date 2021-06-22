@@ -1,18 +1,22 @@
-import React, { useEffect } from 'react'
-import { useIsFocused } from '@react-navigation/native'
+import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import * as CartAction from '../../services/actions/cartAction'
+import * as OrderAction from '../../services/actions/orderAction'
 
 import CartProductItem from '../../components/CartProductItem'
 import Header from '../../components/Header'
+import EmptyList from '../../components/EmptyList'
+import NotificationArea from '../../components/NotificationArea'
+import IntroductionText from '../../components/IntroductionText'
 
-import { Container, Cart, TextIntroArea, ButtonArea, EmptyCartArea } from './styles'
+import { Container, CartList, ButtonArea } from './styles'
 
 export default function Carrinho({ navigation }) {
-    const isFocused = useIsFocused();
     const dispatch = useDispatch()
     const cart = useSelector(store => store.cart)
+    const user = useSelector(store => store.login)
+    const [notificationVisible, setNotificationVisible] = useState(false)
 
     const getCartList = () => {
         dispatch(CartAction.getCartProductList())
@@ -39,40 +43,39 @@ export default function Carrinho({ navigation }) {
             ])
     }
 
-    const buyProducts = () => {
-
+    const finalizeOrder = () => {
+        dispatch(OrderAction.registerOrder(cart, user.uid))
+            .then(() => {
+                setNotificationVisible(true)
+                setTimeout(() => setNotificationVisible(false), 3000)
+            })
     }
 
     useEffect(() => {
         getCartList()
-    }, [isFocused])
+    }, [dispatch])
 
     return (
         <>
-            <Header navigation={navigation} />
+            <Header navigation={navigation} screenName="Carrinho" />
             <Container>
                 {
                     (cart.length === 0)
                         ?
                         <>
-                            <EmptyCartArea>
-                                <EmptyCartArea.Text>
-                                    Seu carrinho está vazio :c
-                                </EmptyCartArea.Text>
-                            </EmptyCartArea>
+                            <EmptyList text="Seu carrinho está vazio :/" />
                         </>
                         :
                         <>
-                            <TextIntroArea>
-                                <TextIntroArea.Text>Os seguintes itens foram adicionados ao seu carrinho:</TextIntroArea.Text>
-                            </TextIntroArea>
-                            <Cart
+                            <IntroductionText text="Os seguintes itens foram adicionados ao seu carrinho:" />
+                            <CartList
                                 data={cart}
                                 renderItem={({ item }) => <CartProductItem data={item}
                                     deleteAction={deleteItem}
                                     updateAction={updateItem}
                                 />}
                                 keyExtractor={item => String(item.id)}
+                                showsVerticalScrollIndicator={false}
                             />
                             <ButtonArea>
                                 <ButtonArea.Button
@@ -83,7 +86,9 @@ export default function Carrinho({ navigation }) {
                                     </ButtonArea.Text>
                                 </ButtonArea.Button>
 
-                                <ButtonArea.Button>
+                                <ButtonArea.Button
+                                    onPress={() => finalizeOrder()}
+                                >
                                     <ButtonArea.Text>
                                         Finalizar pedido
                                     </ButtonArea.Text>
@@ -92,6 +97,8 @@ export default function Carrinho({ navigation }) {
                         </>
                 }
             </Container>
+
+            {notificationVisible && <NotificationArea text={`Seu pedido foi registrado`} closeAction={() => setNotificationVisible(false)} />}
         </>
     )
 }

@@ -14,8 +14,6 @@ export const login = (email, password, rememberMe) => async (dispatch, getState)
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(res => {
-            console.log(`login feito com email ${email}`)
-
             if (rememberMe) {
                 AsyncStorage.setItem("@eccommerce.email", email)
                 AsyncStorage.setItem("@eccommerce.password", password)
@@ -26,6 +24,8 @@ export const login = (email, password, rememberMe) => async (dispatch, getState)
             let firstName = splitFullName[0]
             let lastName = splitFullName[splitFullName.length-1]
             
+            console.log(`login feito com email ${email} / uid: ${uid}`)
+
             return dispatch({
                 type: SET_LOGIN_DATA,
                 payload: {

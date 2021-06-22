@@ -4,9 +4,9 @@ import { Feather } from '@expo/vector-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import * as LoginAction from '../../services/actions/loginAction'
 
-import { MenuIcon, LogoutIcon, LogoutText, HeaderArea } from './styles.js'
+import { Menu, LogoutIcon, LogoutText, HeaderArea } from './styles.js'
 
-export default function Header({ navigation }) {
+export default function Header({ navigation, screenName }) {
     const dispatch = useDispatch()
     const user = useSelector(store => store.login)
 
@@ -23,7 +23,7 @@ export default function Header({ navigation }) {
                     text: "Continuar", onPress: () => {
                         console.log(`usuario ${user.firstName} deslogado`)
                         dispatch(LoginAction.logoff())
-                        
+
                         navigation.reset({ routes: [{ name: 'Login' }] })
                     }
                 }
@@ -37,15 +37,21 @@ export default function Header({ navigation }) {
                 backgroundColor="#0068ff"
             />
             <HeaderArea>
-                <MenuIcon
-                    onPress={() => navigation.openDrawer()}
-                >
-                    <Feather
-                        name="menu"
-                        size={40}
-                        color="#FFF"
-                    />
-                </MenuIcon>
+                <Menu>
+                    <Menu.Icon
+                        onPress={() => navigation.openDrawer()}
+                    >
+                        <Feather
+                            name="menu"
+                            size={40}
+                            color="#FFF"
+                        />
+                    </Menu.Icon>
+                    <Menu.Text>
+                        {screenName}
+                    </Menu.Text>
+                </Menu>
+
                 <LogoutIcon
                     onPress={() => logout()}
                 >

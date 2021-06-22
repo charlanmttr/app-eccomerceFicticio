@@ -1,11 +1,6 @@
 import styled from 'styled-components/native'
 
-export const LoginButtonArea = styled.View`
-    justify-content: center;
-    align-items: center;
-`;
-
-export const LoginButton = styled.TouchableOpacity`
+export const Button = styled.TouchableOpacity`
     background-color: #FFF;
     flex-direction: row;
     justify-content: center;
@@ -15,7 +10,12 @@ export const LoginButton = styled.TouchableOpacity`
     width: 60%;
 `;
 
-export const LoginText = styled.Text`
+Button.Area = styled.View`
+    justify-content: center;
+    align-items: center;
+`;
+
+Button.Text = styled.Text`
     padding-left: 10px;
     color: #000;
     font-weight: bold;

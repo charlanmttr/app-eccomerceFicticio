@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
 import { Container, ProductImage, ProductsInfo, ButtonsArea } from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 
 export default function CartProductItem({ data, deleteAction, updateAction }) {
-    const [quantity, setQuantity] = useState(String(data.quantity))
+    const [quantity, setQuantity] = useState()
     const [modified, setModified] = useState(false)
+
+    useEffect(() => {
+        setQuantity(String(data.quantity))
+    }, [data])
 
     const confirmRemove = () => {
         Alert.alert(
@@ -64,11 +68,11 @@ export default function CartProductItem({ data, deleteAction, updateAction }) {
                 </ProductsInfo.Area>
                 <ProductsInfo.Area>
                     <ProductsInfo.Text>Preço: </ProductsInfo.Text>
-                    <ProductsInfo.Price>{'$' + data.price}</ProductsInfo.Price>
+                    <ProductsInfo.Price>{'$' + data.price.toFixed(2)}</ProductsInfo.Price>
                 </ProductsInfo.Area>
                 <ProductsInfo.Area>
                     <ProductsInfo.Text>Preço total: </ProductsInfo.Text>
-                    <ProductsInfo.TotalPrice>{'$' + (data.quantity * data.price)}</ProductsInfo.TotalPrice>
+                    <ProductsInfo.TotalPrice>{'$' + (data.quantity * data.price).toFixed(2)}</ProductsInfo.TotalPrice>
                 </ProductsInfo.Area>
             </ProductsInfo>
             <ButtonsArea>

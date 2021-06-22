@@ -8,6 +8,7 @@ import * as LoginAction from '../../services/actions/loginAction'
 import { useSelector, useDispatch } from 'react-redux'
 
 import CustomInput from '../../components/CustomInput'
+import CustomPasswordInput from '../../components/CustomPasswordInput';
 import CustomButton from '../../components/CustomButton'
 
 export default function Login({ navigation }) {
@@ -24,7 +25,6 @@ export default function Login({ navigation }) {
             navigation.replace("AppDrawer")
         } catch (error) {
             alert(error)
-            //local para mostrar erro
         }
     }
 
@@ -64,12 +64,11 @@ export default function Login({ navigation }) {
                     />
                 </InputArea>
                 <InputArea>
-                    <CustomInput
+                    <CustomPasswordInput
                         icon="lock"
                         placeholder="Digite sua senha"
                         value={password}
                         valueChange={setPassword}
-                        password
                     />
                 </InputArea>
                 <CheckBoxArea>

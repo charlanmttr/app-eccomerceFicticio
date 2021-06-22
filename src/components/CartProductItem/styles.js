@@ -6,7 +6,7 @@ export const Container = styled.View`
     padding: 10px;
     height: 140px;
     border-radius: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 `;
 
 export const ProductImage = styled.View`

@@ -51,7 +51,6 @@ export const addProductToCart = (productData, quantity) => async (dispatch, getS
                 ...productData,
                 quantity: incrementedQuantity
             }
-
         } else {
             product = {
                 ...productData,

@@ -6,8 +6,22 @@ import styled from 'styled-components/native'
     padding-top: ${statusBarHeight + 'px'};
 */
 
-export const MenuIcon = styled.TouchableOpacity`
+export const Menu = styled.View`
+    flex: 1;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+`;
+
+Menu.Icon = styled.TouchableOpacity`
     justify-content: center;
+`;
+
+Menu.Text = styled.Text`
+    font-size: 20px;
+    color: #FFF;
+    font-weight: bold;
+    padding-left: 8px;
 `;
 
 export const LogoutIcon = styled.TouchableOpacity`
