@@ -20,6 +20,10 @@ export default function Pedidos({ navigation }) {
     const getOrders = () => {
         dispatch(OrderAction.getOrders(user.uid))
             .then(() => setLoading(false))
+            .catch(err => {
+                setLoading(false)
+                alert(err.message)
+            })
     }
 
     useEffect(() => {

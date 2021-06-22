@@ -52,6 +52,7 @@ export default function Carrinho({ navigation }) {
                 setLoading(false)
                 setTimeout(() => setNotificationVisible(false), 3000)
             })
+            .catch(err => alert(err.message))
     }
 
     useEffect(() => {

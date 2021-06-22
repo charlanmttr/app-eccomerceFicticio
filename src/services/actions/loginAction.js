@@ -65,7 +65,8 @@ export const registerNewUser = (email, password, nameUser) => async (dispatch, g
                 type: SET_LOGIN_DATA,
                 payload: {
                     email,
-                    name: nameUser
+                    name: nameUser,
+                    uid: user.uid
                 }
             })
         })
