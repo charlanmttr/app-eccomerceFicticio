@@ -2,7 +2,7 @@ import React from 'react'
 import { IconArea, DefaultInput } from './styles'
 import { Feather } from '@expo/vector-icons'
 
-export default function CustomInput({ icon, placeholder, valueChange, value, email }) {
+export default function CustomInput({ icon, placeholder, valueChange, value, email, capitalize }) {
     return (
         <DefaultInput.Area>
             <IconArea>
@@ -18,6 +18,7 @@ export default function CustomInput({ icon, placeholder, valueChange, value, ema
                 value={value}
                 onChangeText={valueChange}
                 keyboardType={email ? 'email-address' : 'default'}
+                autoCapitalize={capitalize || 'none' }
             />
         </DefaultInput.Area>
     )

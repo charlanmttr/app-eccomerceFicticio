@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert } from 'react-native'
+import { Alert, ActivityIndicator } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import * as CartAction from '../../services/actions/cartAction'
 import * as OrderAction from '../../services/actions/orderAction'
@@ -17,6 +17,7 @@ export default function Carrinho({ navigation }) {
     const cart = useSelector(store => store.cart)
     const user = useSelector(store => store.login)
     const [notificationVisible, setNotificationVisible] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const getCartList = () => {
         dispatch(CartAction.getCartProductList())
@@ -44,9 +45,11 @@ export default function Carrinho({ navigation }) {
     }
 
     const finalizeOrder = () => {
+        setLoading(true)
         dispatch(OrderAction.registerOrder(cart, user.uid))
             .then(() => {
                 setNotificationVisible(true)
+                setLoading(false)
                 setTimeout(() => setNotificationVisible(false), 3000)
             })
     }
@@ -90,7 +93,11 @@ export default function Carrinho({ navigation }) {
                                     onPress={() => finalizeOrder()}
                                 >
                                     <ButtonArea.Text>
-                                        Finalizar pedido
+                                        {
+                                            loading
+                                                ? <ActivityIndicator size="small" color="#0068ff" />
+                                                : 'Finalizar pedido'
+                                        }
                                     </ButtonArea.Text>
                                 </ButtonArea.Button>
                             </ButtonArea>

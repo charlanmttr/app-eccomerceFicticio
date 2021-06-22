@@ -56,6 +56,7 @@ export default function CadastroUsuario({ navigation }) {
                         placeholder="Digite seu nome completo"
                         value={name}
                         valueChange={setName}
+                        capitalize="words"
                     />
                 </InputArea>
                 <InputArea>

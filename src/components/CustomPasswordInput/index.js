@@ -20,6 +20,9 @@ export default function CustomPasswordInput({ icon, placeholder, valueChange, va
                 value={value}
                 onChangeText={valueChange}
                 secureTextEntry={isVisible}
+                autoCapitalize='none'
+                autoCorrect={false}
+                autoCompleteType='off'
             />
             <IconArea.Eye
                 onPress={() => setVisible(!isVisible)}

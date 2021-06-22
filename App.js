@@ -13,6 +13,8 @@ import Pedidos from './src/views/Pedidos'
 import Homepage from './src/views/Homepage'
 import Login from './src/views/Login'
 import CadastroUsuario from './src/views/CadastroUsuario'
+import FAQ from './src/views/FAQ'
+import Sobre from './src/views/Sobre'
 
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Setting a timer'])
@@ -73,6 +75,34 @@ function AppDrawer() {
           )
         }}
       />
+      <Drawer.Screen
+        name="Faq"
+        component={FAQ}
+        options={{
+          title: 'FAQ',
+          drawerIcon: ({ focused, size, color }) => (
+            <Ionicons
+              name={(focused) ? 'help-circle' : 'help-circle-outline'}
+              color={color}
+              size={size}
+            />
+          )
+        }}
+      />
+      <Drawer.Screen
+        name="Sobre"
+        component={Sobre}
+        options={{
+          title: 'Sobre',
+          drawerIcon: ({ focused, size, color }) => (
+            <Ionicons
+              name={(focused) ? 'information-circle' : 'information-circle-outline'}
+              color={color}
+              size={size}
+            />
+          )
+        }}
+      />
     </Drawer.Navigator>
   )
 }
@@ -87,13 +117,19 @@ export default function App() {
         }}>
           <Stack.Screen
             name="Login"
-            component={Login} />
+            component={Login}
+          />
           <Stack.Screen
             name="CadastroUsuario"
-            component={CadastroUsuario} />
+            component={CadastroUsuario}
+          />
           <Stack.Screen
             name="AppDrawer"
-            component={AppDrawer} />
+            component={AppDrawer}
+            options={{
+              animationEnabled: false,
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </StoreProvider>
